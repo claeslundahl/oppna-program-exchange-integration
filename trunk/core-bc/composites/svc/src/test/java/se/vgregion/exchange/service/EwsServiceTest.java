@@ -133,7 +133,6 @@ public class EwsServiceTest {
                 } catch (SOAPException e) {
                     e.printStackTrace();
                 }
-
             }
         };
 
