@@ -20,12 +20,6 @@
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>ews-services-core-bc-composite-types</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>${project.groupId}</groupId>
 			<artifactId>ews-services-core-bc-composite-schema</artifactId>
 			<version>${project.version}</version>
 		</dependency>

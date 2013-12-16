@@ -58,11 +58,6 @@ Generation time : 2013-10-28 20:10:28 CET
 
   <dependencies>
     <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>ews-services-core-bc-composite-types</artifactId>
-      <version>${project.version}</version>
-    </dependency>    
-    <dependency>
       <groupId>org.apache.cxf</groupId>
       <artifactId>cxf-rt-frontend-jaxws</artifactId>
       <version>${apache.cxf.version}</version>
