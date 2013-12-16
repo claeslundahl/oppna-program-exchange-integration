@@ -14,16 +14,9 @@
   <!-- Spring ldap -->
   <bean id="contextSource" class="org.springframework.ldap.core.support.LdapContextSource">
     <property name="url" value="${BIND_URL}"/>
-    <!--<property name="url" value="ldaps://vgregion.se:636"/>-->
-    <!--<property name="url" value="ldap://vgregion.se:389"/>-->
-     <!-- in some queries we need an empty base and in others we can search with base explicitly -->
-    <!--<property name="base" value="DC=sasdfe,DC=vgrasdfegion,OU=usr-Pers"/>-->
     <property name="base" value="${BASE}"/>
-    <!--<property name="base" value="OU=usr-Pers,DC=vgregion,DC=se"/>-->
     <property name="userDn" value="${BIND_DN}"/>
-    <!--<property name="userDn" value="CN=TK.Regionportalen.01,OU=TK,OU=usr-Ifr,DC=vgregion,DC=se"/>-->
     <property name="password" value="${BIND_PW}"/>
-    <!--<property name="password" value="tq?XCgLki!MIm69nekm5"/>-->
     <property name="pooled" value="true"/>
     <property name="baseEnvironmentProperties">
       <map>
@@ -40,41 +33,5 @@
   <bean id="ldapService" class="se.vgregion.ldapservice.SimpleLdapServiceImpl">
     <constructor-arg ref="ldapTemplate"/>
   </bean>
-  <!--<bean id="ldapService" class="se.vgregion.ldapservice.LdapServiceImpl">
-    &lt;!&ndash;<constructor-arg ref="ldapTemplate"/>&ndash;&gt;
-    <constructor-arg index="0">
-      <props>
-        <prop key="BIND_URL">ldap://vgregion.se:389</prop>
-        <prop key="BIND_DN">CN=TK.Regionportalen.01,OU=TK,OU=usr-Ifr,DC=vgregion,DC=se</prop>
-        <prop key="BIND_PW">tq?XCgLki!MIm69nekm5</prop>
-        <prop key="BASE">OU=usr-Pers,DC=vgregion,DC=se</prop>
-      </props>
-    </constructor-arg>
-  </bean>-->
-
-  <!--this(p.getProperty("BIND_URL"), p.getProperty("BIND_DN"), p.getProperty("BIND_PW"), new String[]{},
-  new String[]{}, new Object[]{});
-  this.properties = p;
-  this.base = p.getProperty("BASE");-->
-
-
-
-
-
-
-
-  <!-- Spring ldap -->
-  <!--<bean id="contextSource" class="org.springframework.ldap.core.support.LdapContextSource">
-    <property name="url" value="${BIND_URL}"/>
-    &lt;!&ndash; in some queries we need an empty base and in others we can search with base explicitly &ndash;&gt;
-    <property name="base" value=""/>
-    <property name="userDn" value="${BIND_DN}"/>
-    <property name="password" value="${BIND_PW}"/>
-    <property name="pooled" value="true"/>
-  </bean>
-
-  <bean id="ldapTemplate" class="org.springframework.ldap.core.simple.SimpleLdapTemplate">
-    <constructor-arg ref="contextSource"/>
-  </bean>-->
 
 </beans>

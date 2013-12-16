@@ -37,7 +37,6 @@ public class EwsService {
     private final ObjectFactory objectFactory = new ObjectFactory();
     private ExchangeServicePortType exchangeServicePort;
     private final LdapService ldapService;
-    private final URL wsdlLocation;
 
     @org.springframework.beans.factory.annotation.Value("${ews.user}")
     private String ewsUser;
@@ -48,8 +47,13 @@ public class EwsService {
     public EwsService(LdapService ldapService) {
         this.ldapService = ldapService;
 
-        this.wsdlLocation = EwsService.class.getClassLoader().getResource("wsdl/services.wsdl");
+        URL wsdlLocation = EwsService.class.getClassLoader().getResource("wsdl/services.wsdl");
         exchangeServicePort = new ExchangeService(wsdlLocation).getExchangeService();
+    }
+
+    public EwsService(LdapService ldapService, ExchangeServicePortType exchangeServicePort) {
+        this.ldapService = ldapService;
+        this.exchangeServicePort = exchangeServicePort;
     }
 
     @PostConstruct
@@ -73,9 +77,6 @@ public class EwsService {
         client.setAllowChunking(false);
         client.setAutoRedirect(true);
 
-//        client.setProxyServer("127.0.0.1");
-//        client.setProxyServerPort(8888);
-
         conduit.setClient(client);
     }
 
@@ -91,8 +92,7 @@ public class EwsService {
 
         FieldURIOrConstantType fieldURIOrConstant = objectFactory.createFieldURIOrConstantType();
         fieldURIOrConstant.setConstant(constantValueType);
-//        fieldURIOrConstant.setPath(objectFactory.createFieldURI(pathToUnindexedFieldType));
-        
+
         IsEqualToType filterMessages = new IsEqualToType();
         filterMessages.setFieldURIOrConstant(fieldURIOrConstant);
         filterMessages.setPath(objectFactory.createFieldURI(pathToUnindexedFieldType));
@@ -234,8 +234,14 @@ public class EwsService {
         ConstantValueType c1 = new ConstantValueType();
         c1.setValue("Inkorg");
 
+        ConstantValueType c2 = new ConstantValueType();
+        c2.setValue("Inbox");
+
         FieldURIOrConstantType displayNameField = new FieldURIOrConstantType();
         displayNameField.setConstant(c1);
+
+        FieldURIOrConstantType displayNameField2 = new FieldURIOrConstantType();
+        displayNameField2.setConstant(c2);
 
         PathToUnindexedFieldType fieldType = new PathToUnindexedFieldType();
         fieldType.setFieldURI(UnindexedFieldURIType.FOLDER_DISPLAY_NAME);
@@ -246,11 +252,18 @@ public class EwsService {
                 new QName("http://schemas.microsoft.com/exchange/services/2006/types", "FieldURI"),
                 BasePathToElementType.class, fieldType));
 
-        QName qName = new QName("http://schemas.microsoft.com/exchange/services/2006/types", "IsEqualTo");
+        IsEqualToType equalToType2 = new IsEqualToType();
+        equalToType2.setFieldURIOrConstant(displayNameField2);
+        equalToType2.setPath(new JAXBElement<BasePathToElementType>(
+                new QName("http://schemas.microsoft.com/exchange/services/2006/types", "FieldURI"),
+                BasePathToElementType.class, fieldType));
+
+        MultipleOperandBooleanExpressionType orExpression = new OrType();
+        orExpression.getSearchExpression().add(objectFactory.createIsEqualTo(equalToType));
+        orExpression.getSearchExpression().add(objectFactory.createIsEqualTo(equalToType2));
 
         RestrictionType restriction = new RestrictionType();
-        restriction.setSearchExpression(new JAXBElement<SearchExpressionType>(qName, SearchExpressionType.class,
-                equalToType));
+        restriction.setSearchExpression(objectFactory.createSearchExpression(orExpression));
 
         DistinguishedFolderIdType distinguishedFolderIdType = new DistinguishedFolderIdType();
         distinguishedFolderIdType.setId(DistinguishedFolderIdNameType.ROOT);
@@ -275,8 +288,14 @@ public class EwsService {
 
         ArrayOfResponseMessagesType responseMessages = findFolderResult.value.getResponseMessages();
 
-        JAXBElement<? extends ResponseMessageType> jaxbElement = responseMessages
-                .getCreateItemResponseMessageOrDeleteItemResponseMessageOrGetItemResponseMessage().get(0);
+        List<JAXBElement<? extends ResponseMessageType>> list = responseMessages
+                .getCreateItemResponseMessageOrDeleteItemResponseMessageOrGetItemResponseMessage();
+
+        if (list == null || list.size() == 0) {
+            return null;
+        }
+
+        JAXBElement<? extends ResponseMessageType> jaxbElement = list.get(0);
 
         return (FolderType) (((((FindFolderResponseMessageType) jaxbElement.getValue()).getRootFolder())
                 .getFolders()).getFolderOrCalendarFolderOrContactsFolder()).get(0);
@@ -296,9 +315,8 @@ public class EwsService {
     String fetchUserSid(String userId) {
         LdapUser[] ldapUser = ldapService.search("", String.format("(&(objectClass=person)(cn=%s))", userId));
 
-        if (ldapUser.length != 1) {
-            throw new RuntimeException("Expected exactly one match. " + userId + " resulted in " + ldapUser.length
-                    + " matches.");
+        if (ldapUser == null || ldapUser.length == 0) {
+            return null;
         }
 
         ArrayList attributes = ldapUser[0].getAttributes().get("objectSid");
