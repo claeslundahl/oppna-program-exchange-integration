@@ -4,7 +4,8 @@
   versions of third-party dependencies used throughout the system. Template version: 1.5
   Generation time : 2013-10-28 20:10:28 CET
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>se.vgregion.common</groupId>
@@ -15,7 +16,7 @@
   <groupId>se.vgregion.ews-services</groupId>
   <artifactId>ews-services-system</artifactId>
   <packaging>pom</packaging>
-  <version>1.0</version>
+  <version>1.0-SNAPSHOT</version>
   <name>${project.artifactId}</name>
 
   <modules>
@@ -25,8 +26,8 @@
   <!--NB! SCM config below assumes system name equals VGR subversion/googlecode project name! -->
   <!-- Open Source repo -->
   <scm>
-    <developerConnection>scm:svn:https://ews-services.googlecode.com/svn/tags/ews-services-system-1.0</developerConnection>
-    <url>http://ews-services.googlecode.com/svn/tags/ews-services-system-1.0</url>
+    <developerConnection>scm:svn:https://ews-services.googlecode.com/svn/trunk</developerConnection>
+    <url>http://ews-services.googlecode.com/svn/trunk</url>
   </scm>
 
   <properties>
