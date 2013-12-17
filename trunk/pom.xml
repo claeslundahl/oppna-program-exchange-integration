@@ -15,7 +15,7 @@
   <groupId>se.vgregion.ews-services</groupId>
   <artifactId>ews-services-system</artifactId>
   <packaging>pom</packaging>
-  <version>1.0</version>
+  <version>1.1-SNAPSHOT</version>
   <name>${project.artifactId}</name>
 
   <modules>
@@ -25,8 +25,8 @@
   <!--NB! SCM config below assumes system name equals VGR subversion/googlecode project name! -->
   <!-- Open Source repo -->
   <scm>
-    <developerConnection>scm:svn:https://oppna-program-exchange-integration.googlecode.com/svn/tags/ews-services-system-1.0</developerConnection>
-    <url>http://oppna-program-exchange-integration.googlecode.com/svn/tags/ews-services-system-1.0</url>
+    <developerConnection>scm:svn:https://oppna-program-exchange-integration.googlecode.com/svn/trunk</developerConnection>
+    <url>http://oppna-program-exchange-integration.googlecode.com/svn/trunk</url>
   </scm>
 
   <properties>
