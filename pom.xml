@@ -26,8 +26,8 @@
   <!--NB! SCM config below assumes system name equals VGR subversion/googlecode project name! -->
   <!-- Open Source repo -->
   <scm>
-    <developerConnection>scm:svn:https://ews-services.googlecode.com/svn/trunk</developerConnection>
-    <url>http://ews-services.googlecode.com/svn/trunk</url>
+    <developerConnection>scm:svn:https://oppna-program-exchange-integration.googlecode.com/svn/trunk</developerConnection>
+    <url>http://oppna-program-exchange-integration.googlecode.com/svn/trunk</url>
   </scm>
 
   <properties>
