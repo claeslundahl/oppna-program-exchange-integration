@@ -44,6 +44,12 @@ public class EwsService {
     @org.springframework.beans.factory.annotation.Value("${ews.password}")
     private String ewsPassword;
 
+    /**
+     * Constructor where the {@link com.microsoft.schemas.exchange.services._2006.messages.ExchangeServicePortType} will
+     * be constructed from a wsdl file on the classpath.
+     *
+     * @param ldapService ldapService
+     */
     public EwsService(LdapService ldapService) {
         this.ldapService = ldapService;
 
@@ -51,11 +57,20 @@ public class EwsService {
         exchangeServicePort = new ExchangeService(wsdlLocation).getExchangeService();
     }
 
+    /**
+     * Constructor.
+     *
+     * @param ldapService ldapService
+     * @param exchangeServicePort exchangeServicePort
+     */
     public EwsService(LdapService ldapService, ExchangeServicePortType exchangeServicePort) {
         this.ldapService = ldapService;
         this.exchangeServicePort = exchangeServicePort;
     }
 
+    /**
+     * Initialization of authentication for NTLM which is needed for the Exchange web service.
+     */
     @PostConstruct
     public void init() {
         // Make NTLM work
@@ -66,9 +81,6 @@ public class EwsService {
         });
 
         Client clientProxy = ClientProxy.getClient(exchangeServicePort);
-//        clientProxy.getOutInterceptors().add(new LoggingOutInterceptor());
-//        clientProxy.getInInterceptors().add(new LoggingInInterceptor());
-//        clientProxy.getInFaultInterceptors().add(new LoggingInInterceptor());
         HTTPConduit conduit = (HTTPConduit) clientProxy.getConduit();
 
         HTTPClientPolicy client = new HTTPClientPolicy();
@@ -80,7 +92,18 @@ public class EwsService {
         conduit.setClient(client);
     }
 
+    /**
+     * Fetch unread emails from a user's inbox folder (named "Inbox" or "Inkorg") with all common properties but
+     * without message body.
+     *
+     * @param userId the user id
+     * @param maxNumber the maximum number of unread emails to retrieve
+     * @return a list of unread emails
+     */
     public List<MessageType> fetchUnreadEmails(String userId, int maxNumber) {
+
+        // First fetch the inbox folder
+        FolderType inboxFolder = findInboxFolder(userId);
 
         ConstantValueType constantValueType = objectFactory.createConstantValueType();
         constantValueType.setValue("0");
@@ -103,7 +126,7 @@ public class EwsService {
         restriction.setSearchExpression(messageReadEqualsFalse);
 
         NonEmptyArrayOfBaseFolderIdsType parentFolderIds = objectFactory.createNonEmptyArrayOfBaseFolderIdsType();
-        parentFolderIds.getFolderIdOrDistinguishedFolderId().add(findInboxFolder(userId).getFolderId());
+        parentFolderIds.getFolderIdOrDistinguishedFolderId().add(inboxFolder.getFolderId());
 
         IndexedPageViewType indexedPageViewType = objectFactory.createIndexedPageViewType();
         indexedPageViewType.setBasePoint(IndexBasePointType.BEGINNING);
@@ -131,6 +154,7 @@ public class EwsService {
         FindItemParentType rootFolder = ((FindItemResponseMessageType) list.get(0).getValue()).getRootFolder();
         List<? extends ItemType> emails = rootFolder.getItems().getItemOrMessageOrCalendarItem();
 
+        // To fetch message bodies
         /*for (ItemType email : emails) {
             NonEmptyArrayOfBaseItemIdsType ids = objectFactory.createNonEmptyArrayOfBaseItemIdsType();
             ids.getItemIdOrOccurrenceItemIdOrRecurringMasterItemId().add(email.getItemId());
@@ -159,6 +183,14 @@ public class EwsService {
         return (List<MessageType>) emails;
     }
 
+    /**
+     * Fetch all calendar events for a user for a given period.
+     *
+     * @param userId the user id
+     * @param startDate startDate
+     * @param endDate endDate
+     * @return
+     */
     public List<CalendarItemType> fetchCalendarEvents(String userId, Date startDate, Date endDate) {
         GregorianCalendar startDateCalendar = new GregorianCalendar();
         startDateCalendar.setTime(startDate);
@@ -216,6 +248,12 @@ public class EwsService {
         return (List<CalendarItemType>) items;
     }
 
+    /**
+     * Fetch the number of unread emails in the user's inbox.
+     *
+     * @param userId the user id
+     * @return the number of unread emails in the user's inbox
+     */
     public Integer fetchInboxUnreadCount(String userId) {
 
         FolderType inbox = findInboxFolder(userId);
