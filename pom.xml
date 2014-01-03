@@ -10,7 +10,7 @@
   <parent>
     <groupId>se.vgregion.common</groupId>
     <artifactId>profile-open</artifactId>
-    <version>2.13</version>
+    <version>2.14-SNAPSHOT</version>
   </parent>
 
   <groupId>se.vgregion.ews-services</groupId>
@@ -34,69 +34,5 @@
   <properties>
     <apache.cxf.version>2.7.0</apache.cxf.version>
   </properties>
-
-  <build>
-    <pluginManagement>
-      <plugins>
-        <!-- The Checkstyle Plugin generates a report regarding the code style used by the developers. -->
-        <!-- Reverted to 2.4, 2.5 seems to have a bug, we can't find our checkstyle-xml: Embedded error: Failed during
-          checkstyle execution Could not find resource 'http://oppna-program.googlecode.com/svn/dev-environment/checkstyle/sun_checks_vgr.xml'. -->
-        <plugin>
-          <artifactId>maven-checkstyle-plugin</artifactId>
-          <version>2.10</version>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-    <plugins>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>cobertura-maven-plugin</artifactId>
-        <version>2.5.2</version>
-        <configuration>
-          <check>true</check>
-          <formats>
-            <format>html</format>
-            <format>xml</format>
-          </formats>
-          <instrumentation>
-            <includes>
-              <include>se/vgregion/**/*.class</include>
-            </includes>
-            <!--<excludes>
-              <exclude>com/microsoft/**/*.class</exclude>
-            </excludes>-->
-          </instrumentation>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-pmd-plugin</artifactId>
-        <configuration>
-          <targetJdk>${compileTarget}</targetJdk>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-checkstyle-plugin</artifactId>
-        <configuration>
-          <configLocation>http://oppna-program.googlecode.com/svn/dev-environment/checkstyle/sun_checks_vgr.xml</configLocation>
-          <consoleOutput>true</consoleOutput>
-          <detail>true</detail>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>findbugs-maven-plugin</artifactId>
-        <configuration>
-          <findbugsXmlOutput>true</findbugsXmlOutput>
-          <xmlOutput>true</xmlOutput>
-          <onlyAnalyze>se.vgregion.*</onlyAnalyze>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
 
 </project>
