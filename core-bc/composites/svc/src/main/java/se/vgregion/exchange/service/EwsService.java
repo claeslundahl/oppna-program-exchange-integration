@@ -28,6 +28,8 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
+ * Service class for fetching various items and information from Exchange Web Services.
+ *
  * @author Patrik Bergström
  */
 public class EwsService {
@@ -184,12 +186,12 @@ public class EwsService {
     }
 
     /**
-     * Fetch all calendar events for a user for a given period.
+     * Fetch all calendar events for a user for a given time period.
      *
      * @param userId the user id
      * @param startDate startDate
      * @param endDate endDate
-     * @return
+     * @return all calendar events for a user for the given time period
      */
     public List<CalendarItemType> fetchCalendarEvents(String userId, Date startDate, Date endDate) {
         GregorianCalendar startDateCalendar = new GregorianCalendar();
