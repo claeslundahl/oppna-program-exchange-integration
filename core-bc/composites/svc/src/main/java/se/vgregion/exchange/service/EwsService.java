@@ -75,6 +75,9 @@ public class EwsService {
      */
     @PostConstruct
     public void init() {
+
+        LOGGER.info("Initializing authentication.");
+
         // Make NTLM work
         Authenticator.setDefault(new Authenticator() {
             public PasswordAuthentication getPasswordAuthentication() {
