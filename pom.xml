@@ -93,6 +93,7 @@
         <configuration>
           <findbugsXmlOutput>true</findbugsXmlOutput>
           <xmlOutput>true</xmlOutput>
+          <onlyAnalyze>se.vgregion.*</onlyAnalyze>
         </configuration>
       </plugin>
     </plugins>
