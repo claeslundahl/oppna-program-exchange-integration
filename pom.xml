@@ -62,9 +62,9 @@
             <includes>
               <include>se/vgregion/**/*.class</include>
             </includes>
-            <excludes>
+            <!--<excludes>
               <exclude>com/microsoft/**/*.class</exclude>
-            </excludes>
+            </excludes>-->
           </instrumentation>
         </configuration>
       </plugin>
