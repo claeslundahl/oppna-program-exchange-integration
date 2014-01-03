@@ -51,21 +51,21 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>cobertura-maven-plugin</artifactId>
-        <version>2.6</version>
+        <version>2.5.2</version>
         <configuration>
-          <!--<check>true</check>-->
+          <check>true</check>
           <formats>
             <format>html</format>
             <format>xml</format>
           </formats>
-          <!--<instrumentation>
+          <instrumentation>
             <includes>
               <include>se/vgregion/**/*.class</include>
             </includes>
             <excludes>
               <exclude>com/microsoft/**/*.class</exclude>
             </excludes>
-          </instrumentation>-->
+          </instrumentation>
         </configuration>
       </plugin>
     </plugins>
