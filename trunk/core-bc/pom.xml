@@ -11,12 +11,12 @@ Generation time : 2013-10-28 20:10:28 CET
   <parent>
     <groupId>se.vgregion.ews-services</groupId>
     <artifactId>ews-services-system</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.1</version>
   </parent>
   <groupId>se.vgregion.ews-services</groupId>
   <artifactId>ews-services-core-bc</artifactId>
   <packaging>pom</packaging>
-  <version>1.1-SNAPSHOT</version>
+  <version>1.1</version>
   <name>${project.artifactId}</name>
 
   <modules>
