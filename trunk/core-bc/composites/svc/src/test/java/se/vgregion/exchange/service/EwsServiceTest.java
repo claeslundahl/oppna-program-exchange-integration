@@ -31,6 +31,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -157,6 +158,12 @@ public class EwsServiceTest {
     @Before
     public void setup() throws IOException {
         ldapService = mock(LdapService.class);
+
+        SimpleLdapUser simpleLdapUser = new SimpleLdapUser("theDn");
+        simpleLdapUser.setAttributeValue("objectSid", new byte[]{1, 5, 0, 0, 0, 0, 0, 5, 21, 0, 0, 0, 68, 90, -57, -6,
+                51, 13, 91, 48, 27, -55, 57, 58, 66, 118, 0, 0});
+
+        when(ldapService.search(anyString(), anyString())).thenReturn(new LdapUser[]{simpleLdapUser});
 
         exchangeServicePort = new ExchangeService(this.getClass().getResource("/wsdl/test-services.wsdl"))
                 .getExchangeService();
