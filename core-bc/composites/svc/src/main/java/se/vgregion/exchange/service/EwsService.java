@@ -110,6 +110,10 @@ public class EwsService {
         // First fetch the inbox folder
         FolderType inboxFolder = findInboxFolder(userId);
 
+        if (inboxFolder == null) {
+            return null;
+        }
+
         ConstantValueType constantValueType = objectFactory.createConstantValueType();
         constantValueType.setValue("0");
 
@@ -151,6 +155,11 @@ public class EwsService {
         Holder<FindItemResponseType> findItemResult = new Holder<FindItemResponseType>();
 
         ExchangeImpersonationType impersonation = getExchangeImpersonation(userId);
+
+        if (impersonation == null) {
+            return null;
+        }
+
         exchangeServicePort.findItem(findItemType, impersonation, null, null, null, null, null,
                 findItemResult, null);
 
@@ -231,6 +240,10 @@ public class EwsService {
 
         ExchangeImpersonationType exchangeImpersonation = getExchangeImpersonation(userId);
 
+        if (exchangeImpersonation == null) {
+            return null;
+        }
+
         Holder<FindItemResponseType> findItemResult = new Holder<FindItemResponseType>();
 
         exchangeServicePort.findItem(findItem, exchangeImpersonation, null, null, null, null, null, findItemResult,
@@ -262,6 +275,10 @@ public class EwsService {
     public Integer fetchInboxUnreadCount(String userId) {
 
         FolderType inbox = findInboxFolder(userId);
+
+        if (inbox == null) {
+            return null;
+        }
 
         return inbox.getUnreadCount();
     }
@@ -326,6 +343,10 @@ public class EwsService {
 
         ExchangeImpersonationType impersonation = getExchangeImpersonation(userId);
 
+        if (impersonation == null) {
+            return null;
+        }
+
         exchangeServicePort.findFolder(findFolderType, impersonation, null, null,
                 null, null, findFolderResult, null);
 
@@ -346,6 +367,10 @@ public class EwsService {
 
     private ExchangeImpersonationType getExchangeImpersonation(String userId) {
         String userSid = fetchUserSid(userId);
+
+        if (userSid == null) {
+            return null;
+        }
 
         ConnectingSIDType connectingSID = new ConnectingSIDType();
         connectingSID.setSID(userSid);
