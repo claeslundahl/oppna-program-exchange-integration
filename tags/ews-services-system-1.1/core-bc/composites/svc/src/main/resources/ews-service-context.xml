@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                            http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                            http://www.springframework.org/schema/context
+                            http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+  <bean class="se.vgregion.exchange.service.EwsService">
+    <constructor-arg ref="ldapService"/>
+  </bean>
+
+  <!-- Spring ldap -->
+  <bean id="contextSource" class="org.springframework.ldap.core.support.LdapContextSource">
+    <property name="url" value="${BIND_URL}"/>
+    <property name="base" value="${BASE}"/>
+    <property name="userDn" value="${BIND_DN}"/>
+    <property name="password" value="${BIND_PW}"/>
+    <property name="pooled" value="true"/>
+    <property name="baseEnvironmentProperties">
+      <map>
+        <entry key="java.naming.ldap.attributes.binary" value="objectSid"/>
+      </map>
+    </property>
+
+  </bean>
+
+  <bean id="ldapTemplate" class="org.springframework.ldap.core.simple.SimpleLdapTemplate">
+    <constructor-arg ref="contextSource"/>
+  </bean>
+
+  <bean id="ldapService" class="se.vgregion.ldapservice.SimpleLdapServiceImpl">
+    <constructor-arg ref="ldapTemplate"/>
+  </bean>
+
+</beans>
