@@ -12,7 +12,7 @@ Generation time : 2013-10-28 20:10:28 CET
   <parent>
     <groupId>se.vgregion.ews-services</groupId>
     <artifactId>ews-services-core-bc</artifactId>
-    <version>1.2-SNAPSHOT</version>
+    <version>1.2</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
   <groupId>se.vgregion.ews-services</groupId>
