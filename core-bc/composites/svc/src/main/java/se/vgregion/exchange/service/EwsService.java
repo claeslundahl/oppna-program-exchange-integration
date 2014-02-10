@@ -89,6 +89,8 @@ public class EwsService {
         HTTPConduit conduit = (HTTPConduit) clientProxy.getConduit();
 
         HTTPClientPolicy client = new HTTPClientPolicy();
+//        client.setProxyServerPort(8888);
+//        client.setProxyServer("localhost");
 
         // These are needed to make NTLM authentication work.
         client.setAllowChunking(false);
@@ -297,11 +299,17 @@ public class EwsService {
         ConstantValueType c2 = new ConstantValueType();
         c2.setValue("Inbox");
 
+        ConstantValueType c3 = new ConstantValueType();
+        c3.setValue("Inkorgen");
+
         FieldURIOrConstantType displayNameField = new FieldURIOrConstantType();
         displayNameField.setConstant(c1);
 
         FieldURIOrConstantType displayNameField2 = new FieldURIOrConstantType();
         displayNameField2.setConstant(c2);
+
+        FieldURIOrConstantType displayNameField3 = new FieldURIOrConstantType();
+        displayNameField3.setConstant(c3);
 
         PathToUnindexedFieldType fieldType = new PathToUnindexedFieldType();
         fieldType.setFieldURI(UnindexedFieldURIType.FOLDER_DISPLAY_NAME);
@@ -318,9 +326,16 @@ public class EwsService {
                 new QName("http://schemas.microsoft.com/exchange/services/2006/types", "FieldURI"),
                 BasePathToElementType.class, fieldType));
 
+        IsEqualToType equalToType3 = new IsEqualToType();
+        equalToType3.setFieldURIOrConstant(displayNameField3);
+        equalToType3.setPath(new JAXBElement<BasePathToElementType>(
+                new QName("http://schemas.microsoft.com/exchange/services/2006/types", "FieldURI"),
+                BasePathToElementType.class, fieldType));
+
         MultipleOperandBooleanExpressionType orExpression = new OrType();
         orExpression.getSearchExpression().add(objectFactory.createIsEqualTo(equalToType));
         orExpression.getSearchExpression().add(objectFactory.createIsEqualTo(equalToType2));
+        orExpression.getSearchExpression().add(objectFactory.createIsEqualTo(equalToType3));
 
         RestrictionType restriction = new RestrictionType();
         restriction.setSearchExpression(objectFactory.createSearchExpression(orExpression));
