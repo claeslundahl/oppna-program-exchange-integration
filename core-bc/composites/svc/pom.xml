@@ -8,7 +8,7 @@
 	<parent>
 		<groupId>se.vgregion.ews-services</groupId>
 		<artifactId>ews-services-core-bc</artifactId>
-		<version>1.2</version>
+		<version>1.3-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
 	<groupId>se.vgregion.ews-services</groupId>
