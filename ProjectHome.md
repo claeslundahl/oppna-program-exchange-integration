@@ -1,0 +1,1 @@
+Project to enable integration with Microsoft Excange using exchange-web-services
